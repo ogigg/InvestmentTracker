@@ -8,20 +8,23 @@ export default function ListItem({ coin }: { coin: InvestmentItem }) {
 	return (
 		<View style={styles.container}>
 			<Image style={styles.logo} source={require('../assets/images/logos/BTC_Logo.png')} />
-			<View>
-				<Text style={styles.itemName}>{coin.name.toUpperCase()}</Text>
-				<Text style={styles.amount}>
-					{coin.amount} {coin.name.toUpperCase()}
-				</Text>
-			</View>
-			{coin.data && (
-				<View style={styles.summary}>
-					<Text style={styles.itemName}>{coin.amount * coin.data.current_price}</Text>
+			<View style={styles.textContainer}>
+				<View>
+					<Text style={styles.itemName}>{coin.name.toUpperCase()}</Text>
 					<Text style={styles.amount}>
-						{coin.amount * coin.data.current_price - coin.amount * coin.price}
+						{coin.amount} {coin.name.toUpperCase()}
 					</Text>
 				</View>
-			)}
+
+				{coin.data && (
+					<View style={styles.summary}>
+						<Text style={styles.itemName}>{coin.amount * coin.data.current_price}</Text>
+						<Text style={styles.amount}>
+							{coin.amount * coin.data.current_price - coin.amount * coin.price}
+						</Text>
+					</View>
+				)}
+			</View>
 		</View>
 	);
 }
@@ -31,6 +34,12 @@ const styles = StyleSheet.create({
 		marginVertical: 5,
 		flexDirection: 'row',
 		alignSelf: 'stretch',
+	},
+	textContainer: {
+		flexDirection: 'row',
+		alignSelf: 'stretch',
+		justifyContent: 'space-between',
+		flex: 1,
 	},
 	itemName: {
 		fontSize: 24,
