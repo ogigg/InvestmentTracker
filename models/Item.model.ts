@@ -38,4 +38,9 @@ export interface CryptoData {
 	atl_date: string;
 	roi: null;
 	last_updated: string;
+	chart?: {
+		prices: number[][];
+		market_caps: number[][];
+		total_volumes: number[][];
+	};
 }
