@@ -1,5 +1,9 @@
 {
     "dashboard": {
-        "welcome": "Good morning, here is your summary"
+        "welcome": "Good morning, here is your summary",
+        "addNewItem": "Add new item"
+    },
+    "addNewItem": {
+        "header": "Add new item here"
     }
 }

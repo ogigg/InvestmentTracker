@@ -1,16 +1,16 @@
 import { Button, StyleSheet, TouchableOpacity } from 'react-native';
-import { t } from 'i18n-js';
+import i18n from 'i18n-js';
 import { Text, View } from '../components/Themed';
-import { RootTabScreenProps } from '../types';
+import { RootStackScreenProps } from '../types';
 import React from 'react';
 
-export default function DashboardScreen({ navigation }: RootTabScreenProps<'Dashboard'>) {
+export default function AddNewItem({ navigation }:  RootStackScreenProps<'AddNewItem'>) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{t('dashboard.welcome')}</Text>
+      <Text style={styles.title}>{i18n.t('dashboard.welcome')}</Text>
       <Button
-        onPress={() => navigation.navigate('AddNewItem')}
-        title={t('dashboard.addNewItem')}
+        onPress={() => navigation.navigate('Root')}
+        title="Go to root"
         color="#841584"
         accessibilityLabel="Learn more about this purple button"
       />

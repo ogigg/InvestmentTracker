@@ -30,6 +30,11 @@ const linking: LinkingOptions<RootStackParamList> = {
               DashboardScreen: 'dashboard',
             },
           },
+          AddNewItem: {
+            screens: {
+              AddNewItemScreen: 'addNewItem',
+            },
+          },
         },
       },
       Modal: 'modal',
