@@ -15,6 +15,7 @@ export default function AddNewItem({ navigation }:  RootStackScreenProps<'AddNew
         const newItemsArray = storedItems? JSON.parse(storedItems) : []
         newItemsArray.push(form);
         await AsyncStorage.setItem('items', JSON.stringify(newItemsArray))
+        navigation.replace('Root');
     }
   return (
     <View style={styles.container}>
@@ -77,9 +78,6 @@ export default function AddNewItem({ navigation }:  RootStackScreenProps<'AddNew
         color="#841584"
         accessibilityLabel="Learn more about this purple button"
       />
-      <TouchableOpacity onPress={() => navigation.replace('Root')} style={styles.link}>
-        <Text style={styles.linkText}>Go to home screen!</Text>
-      </TouchableOpacity>
     </View>
   );
 }
