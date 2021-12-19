@@ -1,12 +1,19 @@
-import { StyleSheet, TouchableOpacity } from 'react-native';
-
+import { Button, StyleSheet, TouchableOpacity } from 'react-native';
+import i18n from 'i18n-js';
 import { Text, View } from '../components/Themed';
-import { RootStackScreenProps } from '../types';
+import { RootTabScreenProps } from '../types';
+import React from 'react';
 
-export default function Dashboard({ navigation }: RootStackScreenProps<'NotFound'>) {
+export default function DashboardScreen({ navigation }: RootTabScreenProps<'Dashboard'>) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>This screen doesn't exist.</Text>
+      <Text style={styles.title}>{i18n.t('dashboard.welcome')}</Text>
+      <Button
+        onPress={() => navigation.navigate('Modal')}
+        title="Learn More"
+        color="#841584"
+        accessibilityLabel="Learn more about this purple button"
+      />
       <TouchableOpacity onPress={() => navigation.replace('Root')} style={styles.link}>
         <Text style={styles.linkText}>Go to home screen!</Text>
       </TouchableOpacity>
