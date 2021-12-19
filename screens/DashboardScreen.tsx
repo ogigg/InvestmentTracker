@@ -2,9 +2,19 @@ import { Button, StyleSheet, TouchableOpacity } from 'react-native';
 import { t } from 'i18n-js';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { InvestmentItem } from '../models/Item.model';
 
 export default function DashboardScreen({ navigation }: RootTabScreenProps<'Dashboard'>) {
+  const [itemsList, setItemsList] = useState<InvestmentItem[]>([]);
+
+  useEffect(() => {
+    AsyncStorage.getItem('items').then(items => {
+      setItemsList(JSON.parse(items ?? '[]'));
+    })
+  }, [])
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{t('dashboard.welcome')}</Text>
@@ -17,6 +27,16 @@ export default function DashboardScreen({ navigation }: RootTabScreenProps<'Dash
       <TouchableOpacity onPress={() => navigation.replace('Root')} style={styles.link}>
         <Text style={styles.linkText}>Go to home screen!</Text>
       </TouchableOpacity>
+      <Text>{ itemsList.length }</Text>
+      <View>
+      {itemsList.map(item => (
+      <View key={item.name}>
+        <Text>{ item.name }</Text>
+        <Text>{ item.amount }</Text>
+        <Text>{ item.price }</Text>
+      </View>
+      ))}
+      </View>
     </View>
   );
 }
