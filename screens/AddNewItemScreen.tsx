@@ -6,9 +6,10 @@ import React from 'react';
 import { Input } from 'react-native-elements';
 import { Controller, useForm } from 'react-hook-form';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { InvestmentItem } from '../models/Item.model';
 
 export default function AddNewItem({ navigation }:  RootStackScreenProps<'AddNewItem'>) {
-    const { control, handleSubmit, formState: { errors } } = useForm();
+    const { control, handleSubmit, formState: { errors } } = useForm<InvestmentItem>();
     const textColor = useThemeColor({ light: 'black', dark: 'white' }, 'text');
     const onSubmit = async (form: any) => {
         const storedItems = await AsyncStorage.getItem('items')
@@ -21,7 +22,7 @@ export default function AddNewItem({ navigation }:  RootStackScreenProps<'AddNew
     <View style={styles.container}>
       <Text style={styles.title}>{t('newItem.header')}</Text>
       <Controller
-      name="itemName"
+      name="name"
       control={control}
       rules={{
        required: true,
@@ -45,12 +46,13 @@ export default function AddNewItem({ navigation }:  RootStackScreenProps<'AddNew
       }}
       render={({ field: { onChange, onBlur, value } }) => (
         <Input
+            keyboardType="numeric"
             inputStyle={{ color: textColor }}
             label={t('newItem.amountInput.label')}
             placeholder={t('newItem.amountInput.placeholder')}
             onBlur={onBlur}
             onChangeText={onChange}
-            value={value}
+            value={value?.toString()}
         />  
       )}
     />
@@ -62,12 +64,13 @@ export default function AddNewItem({ navigation }:  RootStackScreenProps<'AddNew
       }}
       render={({ field: { onChange, onBlur, value } }) => (
         <Input
+            keyboardType="numeric"
             inputStyle={{ color: textColor }}
             label={t('newItem.priceInput.label')}
             placeholder={t('newItem.priceInput.placeholder')}
             onBlur={onBlur}
             onChangeText={onChange}
-            value={value}
+            value={value?.toString()}
         />  
       )}
     />
