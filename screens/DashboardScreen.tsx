@@ -8,6 +8,8 @@ import { InvestmentItem } from '../models/Item.model';
 import axios from 'axios';
 import { CRYPTO_API, CRYPTO_URL } from '../constants/Api';
 import { convertSymbolToId } from '../helpers/coinHelpers';
+import ListItem from '../components/DashboardListItem';
+import { cryptoCoinMock } from '../mocks/cryptoCoin.mock';
 
 export default function DashboardScreen({ navigation }: RootTabScreenProps<'Dashboard'>) {
 	const [itemsList, setItemsList] = useState<InvestmentItem[]>([]);
@@ -16,22 +18,26 @@ export default function DashboardScreen({ navigation }: RootTabScreenProps<'Dash
 		async function getLocalStorageData(): Promise<void> {
 			const itemsJSON = await AsyncStorage.getItem('items');
 			const items = JSON.parse(itemsJSON ?? '[]') as InvestmentItem[];
-			setItemsList(items);
+			const fixed = items.map((item) => ({ ...item, data: cryptoCoinMock[0] }));
+			setItemsList(fixed);
 		}
 		getLocalStorageData();
 	}, []);
 
-	useEffect(() => {
-		const itemsWithoutData = itemsList.filter((item) => !item.data);
-		const namesArray = itemsWithoutData.map((item) => convertSymbolToId(item.name)).join(',');
-		const url = `${CRYPTO_URL}${CRYPTO_API.MARKETS}?vs_currency=usd&ids=${namesArray}`;
-		axios({
-			url,
-			method: 'get',
-		}).then((response) => {
-			console.log(response.data);
-		});
-	}, [itemsList]);
+	// useEffect(() => {
+	// 	const itemsWithoutData = itemsList.filter((item) => !item.data);
+	// 	const namesArray = itemsWithoutData.map((item) => convertSymbolToId(item.name)).join(',');
+	// 	const url = `${CRYPTO_URL}${CRYPTO_API.MARKETS}?vs_currency=usd&ids=${namesArray}`;
+	// 	const fixed = itemsList.map((item) => ({ ...item, data: cryptoCoinMock[0] }));
+	// 	console.log(fixed);
+	// 	setItemsList(fixed);
+	// 	axios({
+	// 		url,
+	// 		method: 'get',
+	// 	}).then((response) => {
+	// 		console.log(response.data);
+	// 	});
+	// }, [itemsList]);
 
 	return (
 		<View style={styles.container}>
@@ -45,16 +51,13 @@ export default function DashboardScreen({ navigation }: RootTabScreenProps<'Dash
 			<TouchableOpacity onPress={() => navigation.replace('Root')} style={styles.link}>
 				<Text style={styles.linkText}>Go to home screen!</Text>
 			</TouchableOpacity>
-			<Text>{itemsList.length}</Text>
-			<View>
-				{itemsList.map((item) => (
-					<View key={item.name}>
-						<Text>{item.name}</Text>
-						<Text>{item.amount}</Text>
-						<Text>{item.price}</Text>
-					</View>
-				))}
-			</View>
+			{/* <View style={styles.red}> */}
+			{itemsList.map((item) => (
+				<View key={item.name} style={styles.itemContainer}>
+					<ListItem coin={item}></ListItem>
+				</View>
+			))}
+			{/* </View> */}
 		</View>
 	);
 }
@@ -77,5 +80,8 @@ const styles = StyleSheet.create({
 	linkText: {
 		fontSize: 14,
 		color: '#2e78b7',
+	},
+	itemContainer: {
+		alignSelf: 'stretch',
 	},
 });
