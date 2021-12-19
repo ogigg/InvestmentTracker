@@ -5,6 +5,9 @@ import { RootTabScreenProps } from '../types';
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { InvestmentItem } from '../models/Item.model';
+import axios from 'axios';
+import { CRYPTO_API, CRYPTO_URL } from '../constants/Api';
+import { convertSymbolToId } from '../helpers/coinHelpers';
 
 export default function DashboardScreen({ navigation }: RootTabScreenProps<'Dashboard'>) {
 	const [itemsList, setItemsList] = useState<InvestmentItem[]>([]);
@@ -17,6 +20,18 @@ export default function DashboardScreen({ navigation }: RootTabScreenProps<'Dash
 		}
 		getLocalStorageData();
 	}, []);
+
+	useEffect(() => {
+		const itemsWithoutData = itemsList.filter((item) => !item.data);
+		const namesArray = itemsWithoutData.map((item) => convertSymbolToId(item.name)).join(',');
+		const url = `${CRYPTO_URL}${CRYPTO_API.MARKETS}?vs_currency=usd&ids=${namesArray}`;
+		axios({
+			url,
+			method: 'get',
+		}).then((response) => {
+			console.log(response.data);
+		});
+	}, [itemsList]);
 
 	return (
 		<View style={styles.container}>

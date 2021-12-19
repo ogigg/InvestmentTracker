@@ -8,4 +8,5 @@ export interface InvestmentItem {
 	amount: number;
 	price: number;
 	type?: InvestmentType;
+	data?: any;
 }
