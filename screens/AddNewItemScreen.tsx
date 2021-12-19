@@ -1,16 +1,18 @@
-import { Button, StyleSheet } from 'react-native';
+import { Button, StyleSheet, TextInput } from 'react-native';
 import { t } from 'i18n-js';
-import { Text, useThemeColor, View } from '../components/Themed';
+import { Text, View } from '../components/Themed';
 import { RootStackScreenProps } from '../types';
 import React from 'react';
-import { Input } from 'react-native-elements';
 import { Controller, useForm } from 'react-hook-form';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { InvestmentItem } from '../models/Item.model';
+import { InvestmentItem, InvestmentItemDropdown } from '../models/Item.model';
+import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
+import { availableCryptoCoins } from '../constants/AvailableCrypto';
+import { getThemeColor } from '../hooks/useThemeColor';
 
 export default function AddNewItem({ navigation }: RootStackScreenProps<'AddNewItem'>) {
-	const { control, handleSubmit } = useForm<InvestmentItem>();
-	const textColor = useThemeColor({ light: 'black', dark: 'white' }, 'text');
+	const { setValue, control, handleSubmit } = useForm<InvestmentItem>();
+
 	const onSubmit = async (form: InvestmentItem) => {
 		const storedItems = await AsyncStorage.getItem('items');
 		const newItemsArray = (storedItems ? JSON.parse(storedItems) : []) as InvestmentItem[];
@@ -18,26 +20,41 @@ export default function AddNewItem({ navigation }: RootStackScreenProps<'AddNewI
 		await AsyncStorage.setItem('items', JSON.stringify(newItemsArray));
 		navigation.replace('Root');
 	};
+
+	const setSelectedItem = (item: InvestmentItemDropdown) => {
+		if (item) {
+			setValue('id', item.id);
+			setValue('name', item.name);
+			setValue('symbol', item.symbol);
+		}
+	};
 	return (
 		<View style={styles.container}>
 			<Text style={styles.title}>{t('newItem.header')}</Text>
-			<Controller
-				name="name"
-				control={control}
-				rules={{
-					required: true,
+			<Text style={styles.label}>{t('newItem.cryptoInput.label')}</Text>
+			<AutocompleteDropdown
+				clearOnFocus={false}
+				closeOnSubmit={false}
+				onSelectItem={setSelectedItem}
+				dataSet={availableCryptoCoins}
+				textInputProps={{
+					placeholder: t('newItem.cryptoInput.placeholder'),
+					autoCorrect: false,
+					borderRadius: 0,
+					margin: 0,
+					borderWidth: 1,
+					autoCapitalize: 'none',
+					style: {
+						backgroundColor: getThemeColor('background'),
+						color: getThemeColor('text'),
+						alignSelf: 'stretch',
+					},
 				}}
-				render={({ field: { onChange, onBlur, value } }) => (
-					<Input
-						inputStyle={{ color: textColor }}
-						label={t('newItem.cryptoInput.label')}
-						placeholder={t('newItem.cryptoInput.placeholder')}
-						onBlur={onBlur}
-						onChangeText={onChange}
-						value={value}
-					/>
-				)}
+				containerStyle={{
+					alignSelf: 'stretch',
+				}}
 			/>
+			<Text style={styles.label}>{t('newItem.cryptoInput.label')}</Text>
 			<Controller
 				name="amount"
 				control={control}
@@ -45,17 +62,17 @@ export default function AddNewItem({ navigation }: RootStackScreenProps<'AddNewI
 					required: true,
 				}}
 				render={({ field: { onChange, onBlur, value } }) => (
-					<Input
+					<TextInput
 						keyboardType="numeric"
-						inputStyle={{ color: textColor }}
-						label={t('newItem.amountInput.label')}
-						placeholder={t('newItem.amountInput.placeholder')}
+						style={{ ...styles.input, color: getThemeColor('text') }}
 						onBlur={onBlur}
+						placeholder={t('newItem.amountInput.placeholder')}
 						onChangeText={onChange}
 						value={value?.toString()}
 					/>
 				)}
 			/>
+			<Text style={styles.label}>{t('newItem.priceInput.label')}</Text>
 			<Controller
 				name="price"
 				control={control}
@@ -63,10 +80,9 @@ export default function AddNewItem({ navigation }: RootStackScreenProps<'AddNewI
 					required: true,
 				}}
 				render={({ field: { onChange, onBlur, value } }) => (
-					<Input
+					<TextInput
 						keyboardType="numeric"
-						inputStyle={{ color: textColor }}
-						label={t('newItem.priceInput.label')}
+						style={{ ...styles.input, color: getThemeColor('text') }}
 						placeholder={t('newItem.priceInput.placeholder')}
 						onBlur={onBlur}
 						onChangeText={onChange}
@@ -74,7 +90,6 @@ export default function AddNewItem({ navigation }: RootStackScreenProps<'AddNewI
 					/>
 				)}
 			/>
-
 			<Button
 				onPress={handleSubmit(onSubmit)}
 				title={t('newItem.save')}
@@ -87,7 +102,8 @@ export default function AddNewItem({ navigation }: RootStackScreenProps<'AddNewI
 
 const styles = StyleSheet.create({
 	input: {
-		backgroundColor: 'red',
+		alignSelf: 'stretch',
+		fontSize: 16,
 	},
 	container: {
 		flex: 1,
@@ -98,6 +114,13 @@ const styles = StyleSheet.create({
 	title: {
 		fontSize: 20,
 		fontWeight: 'bold',
+	},
+	label: {
+		fontSize: 14,
+		fontWeight: '600',
+		textAlign: 'left',
+		alignSelf: 'stretch',
+		marginTop: 16,
 	},
 	link: {
 		marginTop: 15,

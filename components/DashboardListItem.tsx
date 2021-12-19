@@ -10,9 +10,9 @@ export default function ListItem({ coin }: { coin: InvestmentItem }) {
 			<Image style={styles.logo} source={require('../assets/images/logos/BTC_Logo.png')} />
 			<View style={styles.textContainer}>
 				<View>
-					<Text style={styles.itemName}>{coin.name.toUpperCase()}</Text>
+					<Text style={styles.itemName}>{coin.name}</Text>
 					<Text style={styles.amount}>
-						{coin.amount} {coin.name.toUpperCase()}
+						{coin.amount} {coin.symbol.toUpperCase()}
 					</Text>
 				</View>
 

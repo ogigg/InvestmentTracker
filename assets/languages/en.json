@@ -6,7 +6,7 @@
     "newItem": {
         "header": "Add new item here",
         "cryptoInput": {
-            "label": "Add new item",
+            "label": "Select crypto",
             "placeholder": "BTC"
         },
         "amountInput": {

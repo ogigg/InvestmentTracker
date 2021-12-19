@@ -7,7 +7,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { InvestmentItem } from '../models/Item.model';
 import axios from 'axios';
 import { CRYPTO_API, CRYPTO_URL } from '../constants/Api';
-import { convertSymbolToId } from '../helpers/coinHelpers';
 import ListItem from '../components/DashboardListItem';
 import { cryptoCoinMock } from '../mocks/cryptoCoin.mock';
 
