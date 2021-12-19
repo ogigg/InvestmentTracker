@@ -7,57 +7,60 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { InvestmentItem } from '../models/Item.model';
 
 export default function DashboardScreen({ navigation }: RootTabScreenProps<'Dashboard'>) {
-  const [itemsList, setItemsList] = useState<InvestmentItem[]>([]);
+	const [itemsList, setItemsList] = useState<InvestmentItem[]>([]);
 
-  useEffect(() => {
-    AsyncStorage.getItem('items').then(items => {
-      setItemsList(JSON.parse(items ?? '[]'));
-    })
-  }, [])
+	useEffect(() => {
+		async function getLocalStorageData(): Promise<void> {
+			const itemsJSON = await AsyncStorage.getItem('items');
+			const items = JSON.parse(itemsJSON ?? '[]') as InvestmentItem[];
+			setItemsList(items);
+		}
+		getLocalStorageData();
+	}, []);
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{t('dashboard.welcome')}</Text>
-      <Button
-        onPress={() => navigation.navigate('AddNewItem')}
-        title={t('dashboard.addNewItem')}
-        color="#841584"
-        accessibilityLabel="Learn more about this purple button"
-      />
-      <TouchableOpacity onPress={() => navigation.replace('Root')} style={styles.link}>
-        <Text style={styles.linkText}>Go to home screen!</Text>
-      </TouchableOpacity>
-      <Text>{ itemsList.length }</Text>
-      <View>
-      {itemsList.map(item => (
-      <View key={item.name}>
-        <Text>{ item.name }</Text>
-        <Text>{ item.amount }</Text>
-        <Text>{ item.price }</Text>
-      </View>
-      ))}
-      </View>
-    </View>
-  );
+	return (
+		<View style={styles.container}>
+			<Text style={styles.title}>{t('dashboard.welcome')}</Text>
+			<Button
+				onPress={() => navigation.navigate('AddNewItem')}
+				title={t('dashboard.addNewItem')}
+				color="#841584"
+				accessibilityLabel="Learn more about this purple button"
+			/>
+			<TouchableOpacity onPress={() => navigation.replace('Root')} style={styles.link}>
+				<Text style={styles.linkText}>Go to home screen!</Text>
+			</TouchableOpacity>
+			<Text>{itemsList.length}</Text>
+			<View>
+				{itemsList.map((item) => (
+					<View key={item.name}>
+						<Text>{item.name}</Text>
+						<Text>{item.amount}</Text>
+						<Text>{item.price}</Text>
+					</View>
+				))}
+			</View>
+		</View>
+	);
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  link: {
-    marginTop: 15,
-    paddingVertical: 15,
-  },
-  linkText: {
-    fontSize: 14,
-    color: '#2e78b7',
-  },
+	container: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+		padding: 20,
+	},
+	title: {
+		fontSize: 20,
+		fontWeight: 'bold',
+	},
+	link: {
+		marginTop: 15,
+		paddingVertical: 15,
+	},
+	linkText: {
+		fontSize: 14,
+		color: '#2e78b7',
+	},
 });

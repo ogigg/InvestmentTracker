@@ -19,11 +19,12 @@ module.exports = {
 		},
 		'ecmaVersion': 13,
 		'sourceType': 'module',
-		'project': './tsconfig.json',
+		'project': ['tsconfig.json']
 	},
 	'plugins': [
 		'react',
 		'react-hooks',
+		'prettier',
 		'@typescript-eslint'
 	],
 	'rules': {
@@ -44,5 +45,6 @@ module.exports = {
 			'always'
 		],
 		'prettier/prettier': 'error',
+		'@typescript-eslint/no-floating-promises': 'off'
 	}
 };
