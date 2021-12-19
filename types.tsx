@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-namespace */
 /**
  * Learn more about using TypeScript with React Navigation:
  * https://reactnavigation.org/docs/typescript/
@@ -8,30 +9,30 @@ import { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/n
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 declare global {
-  namespace ReactNavigation {
-    interface RootParamList extends RootStackParamList {}
-  }
+	namespace ReactNavigation {
+		type RootParamList = RootStackParamList;
+	}
 }
 
 export type RootStackParamList = {
-  Root: NavigatorScreenParams<RootTabParamList> | undefined;
-  Modal: undefined;
-  NotFound: undefined;
-  AddNewItem: undefined;
+	Root: NavigatorScreenParams<RootTabParamList> | undefined;
+	Modal: undefined;
+	NotFound: undefined;
+	AddNewItem: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
-  RootStackParamList,
-  Screen
+	RootStackParamList,
+	Screen
 >;
 
 export type RootTabParamList = {
-  Dashboard: undefined;
-  TabOne: undefined;
-  TabTwo: undefined;
+	Dashboard: undefined;
+	TabOne: undefined;
+	TabTwo: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<
-  BottomTabScreenProps<RootTabParamList, Screen>,
-  NativeStackScreenProps<RootStackParamList>
+	BottomTabScreenProps<RootTabParamList, Screen>,
+	NativeStackScreenProps<RootStackParamList>
 >;

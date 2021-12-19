@@ -1,11 +1,11 @@
 export enum InvestmentType {
-    crypto,
-    stock
+	crypto,
+	stock,
 }
 
 export interface InvestmentItem {
-    name: string;
-    amount: number;
-    price: number;
-    type?: InvestmentType;
-};
+	name: string;
+	amount: number;
+	price: number;
+	type?: InvestmentType;
+}
