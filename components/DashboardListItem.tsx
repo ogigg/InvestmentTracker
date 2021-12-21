@@ -1,11 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { StyleSheet, Image } from 'react-native';
+import { StyleSheet, Image, ActivityIndicator } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Text, View } from './Themed';
 import { InvestmentItem } from '../models/Item.model';
+import { getThemeColor } from '../hooks/useThemeColor';
 
 export default function ListItem({ coin }: { coin: InvestmentItem }) {
 	const [profit, setProfit] = useState(0);
+	const [imageLoading, setImageLoading] = useState(true);
+	const spinnerColor = getThemeColor('text');
 
 	useEffect(() => {
 		if (coin.data) {
@@ -15,7 +18,12 @@ export default function ListItem({ coin }: { coin: InvestmentItem }) {
 
 	return (
 		<View style={styles.container}>
-			<Image style={styles.logo} source={require('../assets/images/logos/BTC_Logo.png')} />
+			<Image
+				style={styles.logo}
+				source={{ uri: coin?.data?.image }}
+				onLoadEnd={() => setImageLoading(false)}
+			/>
+			{imageLoading && <ActivityIndicator size="large" color={spinnerColor}></ActivityIndicator>}
 			<View style={styles.textContainer}>
 				<View>
 					<Text style={styles.itemName}>{coin.name}</Text>
