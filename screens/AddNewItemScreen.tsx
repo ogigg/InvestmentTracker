@@ -39,10 +39,11 @@ export default function AddNewItem({ navigation }: RootStackScreenProps<'AddNewI
 				dataSet={availableCryptoCoins}
 				textInputProps={{
 					placeholder: t('newItem.cryptoInput.placeholder'),
+					placeholderTextColor: getThemeColor('placeholder'),
 					autoCorrect: false,
 					borderRadius: 0,
 					margin: 0,
-					borderWidth: 1,
+					paddingHorizontal: 0,
 					autoCapitalize: 'none',
 					style: {
 						backgroundColor: getThemeColor('background'),
@@ -69,6 +70,7 @@ export default function AddNewItem({ navigation }: RootStackScreenProps<'AddNewI
 						placeholder={t('newItem.amountInput.placeholder')}
 						onChangeText={onChange}
 						value={value?.toString()}
+						placeholderTextColor={getThemeColor('placeholder')}
 					/>
 				)}
 			/>
@@ -87,6 +89,7 @@ export default function AddNewItem({ navigation }: RootStackScreenProps<'AddNewI
 						onBlur={onBlur}
 						onChangeText={onChange}
 						value={value?.toString()}
+						placeholderTextColor={getThemeColor('placeholder')}
 					/>
 				)}
 			/>
