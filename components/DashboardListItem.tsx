@@ -14,7 +14,7 @@ export default function ListItem({ coin }: { coin: InvestmentItem }) {
 		if (coin.data) {
 			setProfit(Math.round(coin.amount * coin.data.current_price - coin.amount * coin.price));
 		}
-	}, [coin]);
+	}, [coin.data]);
 
 	return (
 		<View style={styles.container}>
