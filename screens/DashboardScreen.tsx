@@ -8,6 +8,7 @@ import { CryptoData, InvestmentItem } from '../models/Item.model';
 import axios from 'axios';
 import { CRYPTO_API, CRYPTO_URL } from '../constants/Api';
 import ListItem from '../components/DashboardListItem';
+import DashboardSummary from '../components/DashboardSummary';
 
 export default function DashboardScreen({ navigation }: RootTabScreenProps<'Dashboard'>) {
 	const [items, setItemsList] = useState<InvestmentItem[]>([]);
@@ -31,7 +32,6 @@ export default function DashboardScreen({ navigation }: RootTabScreenProps<'Dash
 				url,
 				method: 'get',
 			}).then(({ data }: { data: CryptoData[] }) => {
-				console.log(data);
 				const itemsWithData = data.map((dataItem: CryptoData) => {
 					const investmentItem = items.find((item) => item.id === dataItem.id);
 					if (investmentItem) {
@@ -46,6 +46,7 @@ export default function DashboardScreen({ navigation }: RootTabScreenProps<'Dash
 
 	return (
 		<View style={styles.container}>
+			<DashboardSummary investmentItems={items}></DashboardSummary>
 			<Text style={styles.title}>{t('dashboard.welcome')}</Text>
 			<Button
 				onPress={() => navigation.navigate('AddNewItem')}

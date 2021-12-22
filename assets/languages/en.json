@@ -1,7 +1,17 @@
 {
     "dashboard": {
         "welcome": "Good morning, here is your summary",
-        "addNewItem": "Add new item"
+        "addNewItem": "Add new item",
+        "summary": {
+            "welcome": {
+                "morning": "Good morning",
+                "day": "Good day",
+                "afternoon": "Good afternoon",
+                "evening": "Evening",
+                "night": "Good night",
+                "hello": "Hello"
+            }
+        }
     },
     "newItem": {
         "header": "Add new item here",
