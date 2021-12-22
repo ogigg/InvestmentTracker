@@ -12,7 +12,8 @@
                 "hello": "Hello"
             },
             "total": "You have in total ",
-            "profit": "In last 24h you earned "
+            "profit": "and in last 24h you earned ",
+            "loss": "and in last 24h you lost "
         }
     },
     "newItem": {
