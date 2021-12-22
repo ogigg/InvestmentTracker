@@ -47,16 +47,12 @@ export default function DashboardScreen({ navigation }: RootTabScreenProps<'Dash
 	return (
 		<View style={styles.container}>
 			<DashboardSummary investmentItems={items}></DashboardSummary>
-			<Text style={styles.title}>{t('dashboard.welcome')}</Text>
 			<Button
 				onPress={() => navigation.navigate('AddNewItem')}
 				title={t('dashboard.addNewItem')}
 				color="#841584"
 				accessibilityLabel="Learn more about this purple button"
 			/>
-			<TouchableOpacity onPress={() => navigation.replace('Root')} style={styles.link}>
-				<Text style={styles.linkText}>Go to home screen!</Text>
-			</TouchableOpacity>
 			{items.map((item) => (
 				<View key={item.name} style={styles.itemContainer}>
 					<ListItem coin={item}></ListItem>
