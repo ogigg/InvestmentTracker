@@ -14,18 +14,15 @@ export default function DashboardSummary({
 }) {
 	const [emoji, setEmoji] = useState(getRandomElementFromArray(dashboardSummaryEmoji.misc));
 	const [welcomeText, setWelcomeText] = useState(t('dashboard.summary.welcome.hello'));
-	const total = Math.round(
-		investmentItems.reduce(
-			(prev, curr) =>
-				prev.amount * prev.data?.current_price + curr.amount * curr?.data?.current_price,
-		),
-	);
-	const change = Math.round(
-		investmentItems.reduce(
-			(prev, curr) =>
-				prev.amount * prev.data?.price_change_24h + curr.amount * curr?.data?.price_change_24h,
-		),
-	);
+	let total = 0;
+	let change = 0;
+
+	investmentItems.map((item) => {
+		if (item.data) {
+			total = Math.round(total + item.amount * item.data?.current_price);
+			change = Math.round(change + item.amount * item.data?.price_change_24h);
+		}
+	});
 
 	const getRandomEmoji = (): void => {
 		const hourNow = new Date().getHours();
@@ -59,8 +56,8 @@ export default function DashboardSummary({
 			<Text style={styles.welcomeText}>{welcomeText}</Text>
 			<Text style={styles.summaryText}>
 				{t('dashboard.summary.total')}
-				{total} USD {t('dashboard.summary.profit')}
-				{change} USD
+				{total} USD {change > 0 ? t('dashboard.summary.profit') : t('dashboard.summary.loss')}
+				{Math.abs(change)} USD
 			</Text>
 		</View>
 	);
