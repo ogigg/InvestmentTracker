@@ -1,7 +1,20 @@
 {
     "dashboard": {
         "welcome": "Good morning, here is your summary",
-        "addNewItem": "Add new item"
+        "addNewItem": "Add new item",
+        "summary": {
+            "welcome": {
+                "morning": "Good morning",
+                "day": "Good day",
+                "afternoon": "Good afternoon",
+                "evening": "Evening",
+                "night": "Good night",
+                "hello": "Hello"
+            },
+            "total": "You have in total ",
+            "profit": "and in last 24h you earned ",
+            "loss": "and in last 24h you lost "
+        }
     },
     "newItem": {
         "header": "Add new item here",
