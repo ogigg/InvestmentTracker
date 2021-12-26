@@ -1,4 +1,5 @@
 import {
+	Platform,
 	Pressable,
 	RefreshControl,
 	SafeAreaView,
@@ -85,6 +86,7 @@ export default function DashboardScreen({ navigation }: RootTabScreenProps<'Dash
 const styles = StyleSheet.create({
 	screenContainer: {
 		flex: 1,
+		marginTop: Platform.OS === 'android' ? 20 : 0,
 	},
 	container: {
 		flex: 1,
