@@ -66,6 +66,7 @@ export default function DashboardSummary({
 const styles = StyleSheet.create({
 	container: {
 		alignSelf: 'stretch',
+		marginVertical: 30,
 	},
 	emoji: {
 		textAlign: 'center',

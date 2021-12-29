@@ -1,4 +1,12 @@
-import { Button, RefreshControl, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import {
+	Platform,
+	Pressable,
+	RefreshControl,
+	SafeAreaView,
+	ScrollView,
+	StyleSheet,
+	Text,
+} from 'react-native';
 import { t } from 'i18n-js';
 import { View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
@@ -9,6 +17,7 @@ import axios from 'axios';
 import { CRYPTO_API, CRYPTO_URL } from '../constants/Api';
 import ListItem from '../components/DashboardListItem';
 import DashboardSummary from '../components/DashboardSummary';
+import { getThemeColor } from '../hooks/useThemeColor';
 
 export default function DashboardScreen({ navigation }: RootTabScreenProps<'Dashboard'>) {
 	const [items, setItemsList] = useState<InvestmentItem[]>([]);
@@ -55,18 +64,19 @@ export default function DashboardScreen({ navigation }: RootTabScreenProps<'Dash
 				contentContainerStyle={styles.screenContainer}
 				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
 				<View style={styles.container}>
+					<Pressable style={styles.addButton} onPress={() => navigation.navigate('AddNewItem')}>
+						<Text style={{ ...styles.addButton, color: getThemeColor('link') }}>
+							{t('dashboard.addNewItem')}
+						</Text>
+					</Pressable>
 					<DashboardSummary investmentItems={items}></DashboardSummary>
-					<Button
-						onPress={() => navigation.navigate('AddNewItem')}
-						title={t('dashboard.addNewItem')}
-						color="#841584"
-						accessibilityLabel="Learn more about this purple button"
-					/>
-					{items.map((item) => (
-						<View key={item.name} style={styles.itemContainer}>
-							<ListItem coin={item}></ListItem>
-						</View>
-					))}
+					<ScrollView>
+						{items.map((item) => (
+							<View key={item.name} style={styles.itemContainer}>
+								<ListItem coin={item}></ListItem>
+							</View>
+						))}
+					</ScrollView>
 				</View>
 			</ScrollView>
 		</SafeAreaView>
@@ -76,11 +86,10 @@ export default function DashboardScreen({ navigation }: RootTabScreenProps<'Dash
 const styles = StyleSheet.create({
 	screenContainer: {
 		flex: 1,
+		marginTop: Platform.OS === 'android' ? 20 : 0,
 	},
 	container: {
 		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'center',
 		padding: 20,
 	},
 	title: {
@@ -97,5 +106,9 @@ const styles = StyleSheet.create({
 	},
 	itemContainer: {
 		alignSelf: 'stretch',
+	},
+	addButton: {
+		alignItems: 'flex-end',
+		fontSize: 20,
 	},
 });

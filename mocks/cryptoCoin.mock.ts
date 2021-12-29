@@ -1,5 +1,84 @@
-import { CryptoData } from '../models/Item.model';
+import { CryptoData, InvestmentItem } from '../models/Item.model';
 
+export const investmentItemMock: InvestmentItem[] = [
+	{
+		amount: 22,
+		id: 'ethereum',
+		name: 'Ethereum',
+		price: 15,
+		symbol: 'eth',
+	},
+	{
+		amount: 100,
+		id: 'helium',
+		name: 'Helium',
+		price: 25,
+		symbol: 'hnt',
+	},
+	{
+		amount: 2501,
+		id: 'binancecoin',
+		name: 'Binance Coin',
+		price: 1,
+		symbol: 'bnb',
+	},
+	{
+		amount: 123,
+		id: 'solana',
+		name: 'Solana',
+		price: 100,
+		symbol: 'sol',
+	},
+	{
+		amount: 100,
+		id: 'cardana',
+		name: 'Cardano',
+		price: 25,
+		symbol: 'ada',
+	},
+	{
+		amount: 500,
+		id: 'ripple',
+		name: 'Ripple',
+		price: 10,
+		symbol: 'xrp',
+	},
+	{
+		amount: 5,
+		id: 'tether',
+		name: 'Tether',
+		price: 1,
+		symbol: 'usdt',
+	},
+	{
+		amount: 25,
+		id: 'polkadot',
+		name: 'Polkadot',
+		price: 15,
+		symbol: 'dot',
+	},
+	{
+		amount: 50000,
+		id: 'dogecoin',
+		name: 'Dogecoin',
+		price: 0.25,
+		symbol: 'doge',
+	},
+	{
+		amount: 1455,
+		id: 'shiba-inu',
+		name: 'Shiba Inu',
+		price: 0.01,
+		symbol: 'shib',
+	},
+	{
+		amount: 5000,
+		id: 'crypto-com-chain',
+		name: 'Crypto.com Coin',
+		price: 1,
+		symbol: 'cro',
+	},
+];
 export const cryptoCoinMock: CryptoData[] = [
 	{
 		id: 'bitcoin',
