@@ -6,11 +6,18 @@ export enum InvestmentType {
 export interface InvestmentItem {
 	id: string;
 	name: string;
-	amount: number;
+	purchases: Purchase[];
 	symbol: string;
-	price: number;
 	type?: InvestmentType;
 	data?: CryptoData;
+}
+
+export interface Purchase {
+	id: number;
+	amount: number;
+	price: number;
+	date?: Date;
+	note?: string;
 }
 
 export interface InvestmentItemDropdown {
