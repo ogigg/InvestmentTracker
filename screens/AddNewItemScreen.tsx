@@ -1,4 +1,4 @@
-import { Button, Platform, ScrollView, StyleSheet, TextInput } from 'react-native';
+import { Alert, Button, Platform, ScrollView, StyleSheet, TextInput } from 'react-native';
 import { t } from 'i18n-js';
 import { Text, View } from '../components/Themed';
 import { RootStackScreenProps } from '../types';
@@ -29,11 +29,14 @@ export default function AddNewItem({ navigation }: RootStackScreenProps<'AddNewI
 		remove(index);
 	};
 
-	useEffect(() => addPurchase(), []);
+	useEffect(() => {
+		addPurchase();
+	}, []);
 
 	const onSubmit = async (form: InvestmentItem) => {
 		console.log(form);
 		console.log(fields);
+		Alert.alert('test');
 		// const storedItems = await AsyncStorage.getItem('items');
 		// const newItemsArray = (storedItems ? JSON.parse(storedItems) : []) as InvestmentItem[];
 		// newItemsArray.push(form);
@@ -49,13 +52,11 @@ export default function AddNewItem({ navigation }: RootStackScreenProps<'AddNewI
 		}
 	};
 
-	const [date, setDate] = useState(new Date());
 	const [shownDatepickerIndex, setShownDatepickerIndex] = useState(-1);
 
 	const onChange = (selectedDate: Date, index: number): void => {
 		if (selectedDate) {
 			setValue(`purchases.${index}.date`, selectedDate);
-			setDate(selectedDate);
 		}
 		hideDatePicker();
 	};
@@ -155,7 +156,7 @@ export default function AddNewItem({ navigation }: RootStackScreenProps<'AddNewI
 						name={`purchases.${index}.date`}
 						control={control}
 						rules={{
-							required: true,
+							required: false,
 						}}
 						render={({ field: { value } }) => (
 							<View style={styles.datePicker}>
@@ -183,7 +184,7 @@ export default function AddNewItem({ navigation }: RootStackScreenProps<'AddNewI
 						name={`purchases.${index}.note`}
 						control={control}
 						rules={{
-							required: true,
+							required: false,
 						}}
 						render={({ field: { onChange, onBlur, value } }) => (
 							<TextInput
