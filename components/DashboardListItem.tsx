@@ -7,12 +7,21 @@ import { getThemeColor } from '../hooks/useThemeColor';
 
 export default function ListItem({ coin }: { coin: InvestmentItem }) {
 	const [profit, setProfit] = useState(0);
+	const [totalAmount, setTotalAmount] = useState(0);
 	const [imageLoading, setImageLoading] = useState(true);
 	const spinnerColor = getThemeColor('text');
 
 	useEffect(() => {
-		if (coin.data) {
-			setProfit(Math.round(coin.amount * coin.data.current_price - coin.amount * coin.price));
+		if (coin.data && coin.data.current_price) {
+			let totalProfit = 0;
+			let totalAmount = 0;
+			coin.purchases.forEach((purchase) => {
+				totalProfit += purchase.amount * coin.data.current_price - purchase.amount * purchase.price;
+				totalAmount += +purchase.amount;
+			});
+			setProfit(Math.round(totalProfit));
+			setTotalAmount(totalAmount);
+			// setProfit(Math.round(coin.amount * coin.data.current_price - coin.amount * coin.price));
 		}
 	}, [coin.data]);
 
@@ -28,14 +37,14 @@ export default function ListItem({ coin }: { coin: InvestmentItem }) {
 				<View>
 					<Text style={styles.itemName}>{coin.name}</Text>
 					<Text style={styles.amount}>
-						{coin.amount} {coin.symbol.toUpperCase()}
+						{totalAmount} {coin.symbol.toUpperCase()}
 					</Text>
 				</View>
 
 				{coin.data && (
 					<View style={styles.summary}>
 						<Text style={styles.itemName}>
-							${Math.round(coin.amount * coin.data.current_price)}
+							${Math.round(totalAmount * coin.data.current_price)}
 						</Text>
 						<Text style={[styles.amount, profit > 0 ? styles.green : styles.red]}>${profit}</Text>
 					</View>

@@ -1,14 +1,15 @@
-import { Button, StyleSheet, TextInput } from 'react-native';
+import { Button, ScrollView, StyleSheet, TextInput } from 'react-native';
 import { t } from 'i18n-js';
 import { Text, View } from '../components/Themed';
 import { RootStackScreenProps } from '../types';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { InvestmentItem, InvestmentItemDropdown } from '../models/Item.model';
 import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 import { availableCryptoCoins } from '../constants/AvailableCrypto';
 import { getThemeColor } from '../hooks/useThemeColor';
+import Colors from '../constants/Colors';
 
 export default function AddNewItem({ navigation }: RootStackScreenProps<'AddNewItem'>) {
 	const { setValue, control, handleSubmit } = useForm<InvestmentItem>();
@@ -28,13 +29,14 @@ export default function AddNewItem({ navigation }: RootStackScreenProps<'AddNewI
 		remove(index);
 	};
 
+	useEffect(() => addPurchase(), []);
+
 	const onSubmit = async (form: InvestmentItem) => {
-		console.log(form);
-		// const storedItems = await AsyncStorage.getItem('items');
-		// const newItemsArray = (storedItems ? JSON.parse(storedItems) : []) as InvestmentItem[];
-		// newItemsArray.push(form);
-		// await AsyncStorage.setItem('items', JSON.stringify(newItemsArray));
-		// navigation.replace('Root');
+		const storedItems = await AsyncStorage.getItem('items');
+		const newItemsArray = (storedItems ? JSON.parse(storedItems) : []) as InvestmentItem[];
+		newItemsArray.push(form);
+		await AsyncStorage.setItem('items', JSON.stringify(newItemsArray));
+		navigation.replace('Root');
 	};
 
 	const setSelectedItem = (item: InvestmentItemDropdown) => {
@@ -45,7 +47,7 @@ export default function AddNewItem({ navigation }: RootStackScreenProps<'AddNewI
 		}
 	};
 	return (
-		<View style={styles.screenWrapper}>
+		<ScrollView style={styles.screenWrapper}>
 			<Text style={styles.title}>{t('newItem.header')}</Text>
 			<Text style={styles.label}>{t('newItem.cryptoInput.label')}</Text>
 			<AutocompleteDropdown
@@ -75,12 +77,14 @@ export default function AddNewItem({ navigation }: RootStackScreenProps<'AddNewI
 				<View key={field.id} style={styles.container}>
 					<View style={styles.purchaseTitleContainer}>
 						<Text style={styles.purchaseTitle}>{`${t('newItem.purchase')} ${index + 1}`}</Text>
-						<Button
-							onPress={() => removePurchase(index)}
-							title={t('newItem.removePurchase')}
-							color="#841584"
-							accessibilityLabel="Remove purchase"
-						/>
+						{fields.length > 1 && (
+							<Button
+								onPress={() => removePurchase(index)}
+								title={t('newItem.removePurchase')}
+								color={Colors.light.buttonText}
+								accessibilityLabel="Remove purchase"
+							/>
+						)}
 					</View>
 					<Text style={styles.label}>{t('newItem.amountInput.label')}</Text>
 					<Controller
@@ -165,16 +169,16 @@ export default function AddNewItem({ navigation }: RootStackScreenProps<'AddNewI
 			<Button
 				onPress={addPurchase}
 				title={t('newItem.addPurchase')}
-				color="#841584"
+				color={Colors.light.buttonText}
 				accessibilityLabel="Learn more about this purple button"
 			/>
 			<Button
 				onPress={handleSubmit(onSubmit)}
 				title={t('newItem.save')}
-				color="#841584"
+				color={Colors.light.buttonText}
 				accessibilityLabel="Learn more about this purple button"
 			/>
-		</View>
+		</ScrollView>
 	);
 }
 
@@ -182,6 +186,7 @@ const styles = StyleSheet.create({
 	screenWrapper: {
 		flex: 1,
 		padding: 20,
+		flexGrow: 1,
 	},
 	purchaseTitleContainer: {
 		alignSelf: 'stretch',
@@ -193,7 +198,6 @@ const styles = StyleSheet.create({
 		fontSize: 25,
 	},
 	container: {
-		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'flex-start',
 	},
