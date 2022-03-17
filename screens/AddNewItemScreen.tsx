@@ -11,7 +11,8 @@ import { availableCryptoCoins } from '../constants/AvailableCrypto';
 import { getThemeColor } from '../hooks/useThemeColor';
 import Colors from '../constants/Colors';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import DateTimePickerAndroid from '@react-native-community/datetimepicker';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+
 export default function AddNewItem({ navigation }: RootStackScreenProps<'AddNewItem'>) {
 	const { setValue, control, handleSubmit } = useForm<InvestmentItem>();
 
@@ -56,11 +57,19 @@ export default function AddNewItem({ navigation }: RootStackScreenProps<'AddNewI
 			setValue(`purchases.${index}.date`, selectedDate);
 			setDate(selectedDate);
 		}
-		setShownDatepickerIndex(-1);
+		hideDatePicker();
 	};
 
 	const showDatepicker = (index: number) => {
 		setShownDatepickerIndex(index);
+	};
+
+	const hideDatePicker = () => {
+		setShownDatepickerIndex(-1);
+	};
+
+	const removeDate = (index: number) => {
+		setValue(`purchases.${index}.date`, undefined);
 	};
 
 	return (
@@ -149,21 +158,22 @@ export default function AddNewItem({ navigation }: RootStackScreenProps<'AddNewI
 							required: true,
 						}}
 						render={({ field: { value } }) => (
-							<View style={styles.dateInput}>
-								<Text>{value?.toDateString()}</Text>
-								<View>
-									<Button
-										onPress={() => showDatepicker(index)}
-										title={t('newItem.dateInput.button')}></Button>
-									{shownDatepickerIndex === index && (
-										<DateTimePicker
-											value={date}
-											mode={'date'}
-											display={Platform.OS === 'ios' ? 'inline' : 'default'}
-											onChange={(event, date) => onChange(date as Date, index)}
-										/>
-									)}
+							<View style={styles.datePicker}>
+								<View style={styles.dateInput}>
+									<Text>{value?.toDateString()}</Text>
+									{value && <Button title={'X'} onPress={() => removeDate(index)} />}
 								</View>
+
+								<Button
+									title={t('newItem.dateInput.button')}
+									onPress={() => showDatepicker(index)}
+								/>
+								<DateTimePickerModal
+									isVisible={shownDatepickerIndex === index}
+									mode="date"
+									onConfirm={(date) => onChange(date, index)}
+									onCancel={hideDatePicker}
+								/>
 							</View>
 						)}
 					/>
@@ -247,13 +257,20 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		color: '#2e78b7',
 	},
-	dateInput: {
+	datePicker: {
 		flex: 1,
 		flexGrow: 1,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		backgroundColor: 'red',
 		width: '100%',
+	},
+	dateInput: {
+		display: 'flex',
+		alignItems: 'center',
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		flexGrow: 1,
+		marginRight: 4,
 	},
 });
