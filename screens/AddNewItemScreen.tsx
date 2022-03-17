@@ -148,30 +148,26 @@ export default function AddNewItem({ navigation }: RootStackScreenProps<'AddNewI
 						rules={{
 							required: true,
 						}}
-						render={({ field: { onChange, onBlur, value } }) => (
-							<TextInput
-								style={{ ...styles.input, color: getThemeColor('text') }}
-								placeholder={t('newItem.dateInput.placeholder')}
-								onBlur={onBlur}
-								onChangeText={onChange}
-								value={value?.toDateString()}
-								placeholderTextColor={getThemeColor('placeholder')}
-							/>
+						render={({ field: { value } }) => (
+							<View style={styles.dateInput}>
+								<Text>{value?.toDateString()}</Text>
+								<View>
+									<Button
+										onPress={() => showDatepicker(index)}
+										title={t('newItem.dateInput.button')}></Button>
+									{shownDatepickerIndex === index && (
+										<DateTimePicker
+											value={date}
+											mode={'date'}
+											display={Platform.OS === 'ios' ? 'inline' : 'default'}
+											onChange={(event, date) => onChange(date as Date, index)}
+										/>
+									)}
+								</View>
+							</View>
 						)}
 					/>
-					<View>
-						<Button
-							onPress={() => showDatepicker(index)}
-							title={date ? date.toISOString() : 'Pick a date'}></Button>
-						{shownDatepickerIndex === index && (
-							<DateTimePicker
-								value={date}
-								mode={'date'}
-								display={Platform.OS === 'ios' ? 'inline' : 'default'}
-								onChange={(event, date) => onChange(date as Date, index)}
-							/>
-						)}
-					</View>
+
 					<Text style={styles.label}>{t('newItem.noteInput.label')}</Text>
 					<Controller
 						name={`purchases.${index}.note`}
@@ -250,5 +246,14 @@ const styles = StyleSheet.create({
 	linkText: {
 		fontSize: 14,
 		color: '#2e78b7',
+	},
+	dateInput: {
+		flex: 1,
+		flexGrow: 1,
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		backgroundColor: 'red',
+		width: '100%',
 	},
 });
