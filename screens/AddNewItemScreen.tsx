@@ -1,4 +1,4 @@
-import { Button, ScrollView, StyleSheet, TextInput } from 'react-native';
+import { Button, Platform, ScrollView, StyleSheet, TextInput } from 'react-native';
 import { t } from 'i18n-js';
 import { Text, View } from '../components/Themed';
 import { RootStackScreenProps } from '../types';
@@ -10,11 +10,10 @@ import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 import { availableCryptoCoins } from '../constants/AvailableCrypto';
 import { getThemeColor } from '../hooks/useThemeColor';
 import Colors from '../constants/Colors';
-
+import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePickerAndroid from '@react-native-community/datetimepicker';
 export default function AddNewItem({ navigation }: RootStackScreenProps<'AddNewItem'>) {
 	const { setValue, control, handleSubmit } = useForm<InvestmentItem>();
-	const [date, setDate] = useState(new Date());
-	const [open, setOpen] = useState(false);
 
 	const { fields, append, remove } = useFieldArray({
 		control,
@@ -32,11 +31,13 @@ export default function AddNewItem({ navigation }: RootStackScreenProps<'AddNewI
 	useEffect(() => addPurchase(), []);
 
 	const onSubmit = async (form: InvestmentItem) => {
-		const storedItems = await AsyncStorage.getItem('items');
-		const newItemsArray = (storedItems ? JSON.parse(storedItems) : []) as InvestmentItem[];
-		newItemsArray.push(form);
-		await AsyncStorage.setItem('items', JSON.stringify(newItemsArray));
-		navigation.replace('Root');
+		console.log(form);
+		console.log(fields);
+		// const storedItems = await AsyncStorage.getItem('items');
+		// const newItemsArray = (storedItems ? JSON.parse(storedItems) : []) as InvestmentItem[];
+		// newItemsArray.push(form);
+		// await AsyncStorage.setItem('items', JSON.stringify(newItemsArray));
+		// navigation.replace('Root');
 	};
 
 	const setSelectedItem = (item: InvestmentItemDropdown) => {
@@ -46,6 +47,22 @@ export default function AddNewItem({ navigation }: RootStackScreenProps<'AddNewI
 			setValue('symbol', item.symbol);
 		}
 	};
+
+	const [date, setDate] = useState(new Date());
+	const [shownDatepickerIndex, setShownDatepickerIndex] = useState(-1);
+
+	const onChange = (selectedDate: Date, index: number): void => {
+		if (selectedDate) {
+			setValue(`purchases.${index}.date`, selectedDate);
+			setDate(selectedDate);
+		}
+		setShownDatepickerIndex(-1);
+	};
+
+	const showDatepicker = (index: number) => {
+		setShownDatepickerIndex(index);
+	};
+
 	return (
 		<ScrollView style={styles.screenWrapper}>
 			<Text style={styles.title}>{t('newItem.header')}</Text>
@@ -137,12 +154,24 @@ export default function AddNewItem({ navigation }: RootStackScreenProps<'AddNewI
 								placeholder={t('newItem.dateInput.placeholder')}
 								onBlur={onBlur}
 								onChangeText={onChange}
-								value={value?.toString()}
+								value={value?.toDateString()}
 								placeholderTextColor={getThemeColor('placeholder')}
 							/>
 						)}
 					/>
-
+					<View>
+						<Button
+							onPress={() => showDatepicker(index)}
+							title={date ? date.toISOString() : 'Pick a date'}></Button>
+						{shownDatepickerIndex === index && (
+							<DateTimePicker
+								value={date}
+								mode={'date'}
+								display={Platform.OS === 'ios' ? 'inline' : 'default'}
+								onChange={(event, date) => onChange(date as Date, index)}
+							/>
+						)}
+					</View>
 					<Text style={styles.label}>{t('newItem.noteInput.label')}</Text>
 					<Controller
 						name={`purchases.${index}.note`}
@@ -164,8 +193,6 @@ export default function AddNewItem({ navigation }: RootStackScreenProps<'AddNewI
 				</View>
 			))}
 
-			{/* <Button title="Open" onPress={() => setOpen(true)} /> */}
-			{/* <DatePicker date={date} onDateChange={setDate} /> */}
 			<Button
 				onPress={addPurchase}
 				title={t('newItem.addPurchase')}
