@@ -19,8 +19,15 @@ export default function DashboardSummary({
 
 	investmentItems.map((item) => {
 		if (item.data) {
-			total = Math.round(total + item.amount * item.data?.current_price);
-			change = Math.round(change + item.amount * item.data?.price_change_24h);
+			let purchaseTotal = 0;
+			let purchaseChange = 0;
+
+			item.purchases.forEach((purchase) => {
+				purchaseTotal += purchase.amount * item.data!.current_price;
+				purchaseChange += purchase.amount * item.data!.price_change_24h;
+			});
+			total = Math.round(purchaseTotal);
+			change = Math.round(purchaseChange);
 		}
 	});
 

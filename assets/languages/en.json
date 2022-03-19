@@ -22,14 +22,26 @@
             "label": "Select crypto",
             "placeholder": "BTC"
         },
+        "purchase": "Purchase",
         "amountInput": {
-            "label": "Amount",
-            "placeholder": "1.43"
+            "label": "Amount*",
+            "placeholder": "0.05"
         },
         "priceInput": {
-            "label": "Price per coin (USD)",
+            "label": "Price per coin (USD)*",
             "placeholder": "15.3"
         },
+        "dateInput": {
+            "label": "Date of purchase",
+            "placeholder": "20-08-2020",
+            "button": "Pick a date"
+        },
+        "noteInput": {
+            "label": "Note",
+            "placeholder": "Binance"
+        },
+        "addPurchase": "Add purchase",
+        "removePurchase": "Remove",
         "save": "Save"
     }
 }
