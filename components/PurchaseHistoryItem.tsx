@@ -1,12 +1,13 @@
 import React from 'react';
 import { Purchase } from '../models/Item.model';
 import { ScrollView, StyleSheet, View } from 'react-native';
-
+import { t } from 'i18n-js';
 import { Text } from '../components/Themed';
+import { getThemeColor } from '../hooks/useThemeColor';
 
 export default function purchaseHistoryItem(purchaseItem: Purchase, index: number) {
 	return (
-		<View style={styles.wrapper}>
+		<View style={{ ...styles.wrapper, backgroundColor: getThemeColor('secondary') }}>
 			<Text key={index}>{purchaseItem.date ?? t('itemDetails.noDate')}</Text>
 			<Text style={styles.text} key={index}>
 				{purchaseItem.amount} x {purchaseItem.price}$
@@ -27,10 +28,5 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 		fontWeight: 'bold',
 		marginVertical: 6,
-	},
-	graphPlaceholder: {
-		height: 250,
-		width: '100%',
-		backgroundColor: 'blue',
 	},
 });
