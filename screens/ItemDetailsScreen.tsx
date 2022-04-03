@@ -2,16 +2,22 @@ import { t } from 'i18n-js';
 import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
+import purchaseHistoryItem from '../components/PurchaseHistoryItem';
 import { Text } from '../components/Themed';
 import { InvestmentItem } from '../models/Item.model';
 import { RootStackScreenProps } from '../types';
 
 export default function ItemDetails({ route, navigation }: RootStackScreenProps<'ItemDetails'>) {
 	const { item }: { item: InvestmentItem } = route.params;
+	console.log(item);
 	return (
 		<ScrollView style={styles.screenWrapper}>
 			<Text style={styles.title}>{item.name}</Text>
 			<View style={styles.graphPlaceholder}></View>
+			<Text>{t('itemDetails.purchaseHistory')}</Text>
+			{item.purchases.map((purchase, index) => {
+				return purchaseHistoryItem(purchase, index);
+			})}
 		</ScrollView>
 	);
 }
@@ -25,6 +31,7 @@ const styles = StyleSheet.create({
 	title: {
 		fontSize: 20,
 		fontWeight: 'bold',
+		textAlign: 'center',
 	},
 	graphPlaceholder: {
 		height: 250,
