@@ -15,9 +15,7 @@ export default function ItemDetails({ route, navigation }: RootStackScreenProps<
 			<Text style={styles.title}>{item.name}</Text>
 			<View style={styles.graphPlaceholder}></View>
 			<Text>{t('itemDetails.purchaseHistory')}</Text>
-			{item.purchases.map((purchase, index) => {
-				return purchaseHistoryItem(purchase, index);
-			})}
+			{item.purchases.map(purchaseHistoryItem)}
 		</ScrollView>
 	);
 }
