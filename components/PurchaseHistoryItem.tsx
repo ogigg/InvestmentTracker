@@ -4,16 +4,17 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { t } from 'i18n-js';
 import { Text } from '../components/Themed';
 import { getThemeColor } from '../hooks/useThemeColor';
+import StyledBox from './styled/StyledBox';
 
 export default function purchaseHistoryItem(purchaseItem: Purchase, index: number) {
 	return (
-		<View style={{ ...styles.wrapper, backgroundColor: getThemeColor('secondary') }}>
+		<StyledBox style={{ marginBottom: 16 }}>
 			<Text key={index}>{purchaseItem.date ?? t('itemDetails.noDate')}</Text>
 			<Text style={styles.text} key={index}>
 				{purchaseItem.amount} x {purchaseItem.price}$
 			</Text>
 			<Text key={index}>{purchaseItem.note}</Text>
-		</View>
+		</StyledBox>
 	);
 }
 
