@@ -73,7 +73,9 @@ export default function DashboardScreen({ navigation }: RootTabScreenProps<'Dash
 					<ScrollView>
 						{items.map((item) => (
 							<View key={item.name} style={styles.itemContainer}>
-								<ListItem coin={item}></ListItem>
+								<ListItem
+									coin={item}
+									onClick={() => navigation.navigate('ItemDetails', { item })}></ListItem>
 							</View>
 						))}
 					</ScrollView>
