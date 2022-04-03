@@ -14,7 +14,7 @@ export default function ItemDetails({ route, navigation }: RootStackScreenProps<
 		<ScrollView style={{ ...styles.screenWrapper, backgroundColor: getThemeColor('background') }}>
 			<Text style={styles.title}>{item.name}</Text>
 			<View style={styles.graphPlaceholder}></View>
-			<Text>{t('itemDetails.purchaseHistory')}</Text>
+			<Text style={styles.title}>{t('itemDetails.purchaseHistory')}</Text>
 			{item.purchases.map(purchaseHistoryItem)}
 		</ScrollView>
 	);
@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		fontWeight: 'bold',
 		textAlign: 'center',
+		marginBottom: 10,
 	},
 	graphPlaceholder: {
 		height: 250,
