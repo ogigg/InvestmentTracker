@@ -13,7 +13,6 @@ export default function ItemDetails({ route, navigation }: RootStackScreenProps<
 	const [imageLoading, setImageLoading] = useState(true);
 
 	const { item }: { item: InvestmentItem } = route.params;
-	console.log(item);
 	return (
 		<ScrollView style={{ ...styles.screenWrapper, backgroundColor: getThemeColor('background') }}>
 			<Text style={styles.title}>{item.name}</Text>
