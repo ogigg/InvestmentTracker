@@ -11,6 +11,7 @@ import { RootStackScreenProps } from '../types';
 
 export default function ItemDetails({ route, navigation }: RootStackScreenProps<'ItemDetails'>) {
 	const [imageLoading, setImageLoading] = useState(true);
+	const spinnerColor = getThemeColor('text');
 
 	const { item }: { item: InvestmentItem } = route.params;
 	return (
@@ -37,9 +38,9 @@ export default function ItemDetails({ route, navigation }: RootStackScreenProps<
 						source={{ uri: item?.data?.image }}
 						onLoadEnd={() => setImageLoading(false)}
 					/>
-					{/* {imageLoading && (
-						<ActivityIndicator size="large" color={getThemeColor('text')}></ActivityIndicator>
-					)} */}
+					{imageLoading && (
+						<ActivityIndicator size="large" color={spinnerColor}></ActivityIndicator>
+					)}
 				</View>
 				<View style={{ ...styles.amountWrapper, backgroundColor: getThemeColor('secondary') }}>
 					<Text style={styles.amountText}>{item.name}</Text>
