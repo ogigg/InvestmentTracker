@@ -16,20 +16,6 @@ export default function ListItem({ coin, onClick }: ListItemProps) {
 	const [imageLoading, setImageLoading] = useState(true);
 	const spinnerColor = getThemeColor('text');
 
-	useEffect(() => {
-		if (coin.data && coin.data.current_price) {
-			let totalProfit = 0;
-			let totalAmount = 0;
-			coin.purchases.forEach((purchase) => {
-				totalProfit += purchase.amount * coin.data.current_price - purchase.amount * purchase.price;
-				totalAmount += +purchase.amount;
-			});
-			setProfit(Math.round(totalProfit));
-			setTotalAmount(totalAmount);
-			// setProfit(Math.round(coin.amount * coin.data.current_price - coin.amount * coin.price));
-		}
-	}, [coin.data]);
-
 	return (
 		<Pressable onPress={onClick}>
 			<View style={styles.container}>
@@ -43,14 +29,14 @@ export default function ListItem({ coin, onClick }: ListItemProps) {
 					<View>
 						<Text style={styles.itemName}>{coin.name}</Text>
 						<Text style={styles.amount}>
-							{totalAmount} {coin.symbol.toUpperCase()}
+							{coin.totalAmount} {coin.symbol.toUpperCase()}
 						</Text>
 					</View>
 
 					{coin.data && (
 						<View style={styles.summary}>
 							<Text style={styles.itemName}>
-								${Math.round(totalAmount * coin.data.current_price)}
+								${Math.round(coin.totalAmount ?? 0 * coin.data.current_price)}
 							</Text>
 							<Text style={[styles.amount, profit > 0 ? styles.green : styles.red]}>${profit}</Text>
 						</View>

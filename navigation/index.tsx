@@ -50,7 +50,7 @@ function RootNavigator() {
 				name="ItemDetails"
 				component={ItemDetailsScreen}
 				options={{
-					headerTitle: t('newItem.header'),
+					headerTitle: t('itemDetails.header'),
 				}}
 			/>
 			<Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />

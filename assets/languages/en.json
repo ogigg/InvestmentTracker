@@ -45,6 +45,7 @@
         "save": "Save"
     },
     "itemDetails": {
+        "header": "Item details",
         "purchaseHistory": "Purchase history",
         "noDate": "No date"
     }

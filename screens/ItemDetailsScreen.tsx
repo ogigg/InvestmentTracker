@@ -1,14 +1,17 @@
 import { t } from 'i18n-js';
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ActivityIndicator, ScrollView, StyleSheet, Image } from 'react-native';
 
 import purchaseHistoryItem from '../components/PurchaseHistoryItem';
+import StyledBox from '../components/styled/StyledBox';
 import { Text, View } from '../components/Themed';
 import { getThemeColor } from '../hooks/useThemeColor';
 import { InvestmentItem } from '../models/Item.model';
 import { RootStackScreenProps } from '../types';
 
 export default function ItemDetails({ route, navigation }: RootStackScreenProps<'ItemDetails'>) {
+	const [imageLoading, setImageLoading] = useState(true);
+
 	const { item }: { item: InvestmentItem } = route.params;
 	console.log(item);
 	return (
@@ -28,7 +31,24 @@ export default function ItemDetails({ route, navigation }: RootStackScreenProps<
 				</View>
 			)}
 			<View style={styles.graphPlaceholder}></View>
-
+			<StyledBox style={styles.itemDetailsBox}>
+				<View style={{ backgroundColor: getThemeColor('secondary') }}>
+					<Image
+						style={styles.logo}
+						source={{ uri: item?.data?.image }}
+						onLoadEnd={() => setImageLoading(false)}
+					/>
+					{/* {imageLoading && (
+						<ActivityIndicator size="large" color={getThemeColor('text')}></ActivityIndicator>
+					)} */}
+				</View>
+				<View style={{ ...styles.amountWrapper, backgroundColor: getThemeColor('secondary') }}>
+					<Text style={styles.amountText}>{item.name}</Text>
+					<Text style={styles.amountText}>
+						{item.totalAmount} {item.symbol.toUpperCase()}
+					</Text>
+				</View>
+			</StyledBox>
 			<Text style={styles.title}>{t('itemDetails.purchaseHistory')}</Text>
 			{item.purchases.map(purchaseHistoryItem)}
 		</ScrollView>
@@ -60,5 +80,25 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		fontWeight: '600',
 		marginBottom: 14,
+	},
+	itemDetailsBox: {
+		marginVertical: 16,
+		display: 'flex',
+		flexDirection: 'row',
+	},
+	logo: {
+		width: 50,
+		height: 50,
+		marginRight: 16,
+	},
+	amountWrapper: {
+		display: 'flex',
+		flexDirection: 'column',
+		flexGrow: 1,
+		justifyContent: 'center',
+	},
+	amountText: {
+		fontSize: 16,
+		fontWeight: 'bold',
 	},
 });

@@ -18,6 +18,7 @@ import { CRYPTO_API, CRYPTO_URL } from '../constants/Api';
 import ListItem from '../components/DashboardListItem';
 import DashboardSummary from '../components/DashboardSummary';
 import { getThemeColor } from '../hooks/useThemeColor';
+import { calculateTotalAmount } from '../helpers/coinHelpers';
 
 export default function DashboardScreen({ navigation }: RootTabScreenProps<'Dashboard'>) {
 	const [items, setItemsList] = useState<InvestmentItem[]>([]);
@@ -54,7 +55,11 @@ export default function DashboardScreen({ navigation }: RootTabScreenProps<'Dash
 					return investmentItem;
 				}
 			});
-			setItemsList(itemsWithData as InvestmentItem[]);
+			const itemsWithTotalAmount = itemsWithData.map((item) => ({
+				...item,
+				totalAmount: calculateTotalAmount(item),
+			}));
+			setItemsList(itemsWithTotalAmount as InvestmentItem[]);
 		}
 	};
 
