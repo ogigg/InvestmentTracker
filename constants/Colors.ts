@@ -11,6 +11,7 @@ export default {
 		tabIconSelected: tintColorLight,
 		placeholder: '#ababab',
 		link: '#548CFF',
+		secondary: '#fff',
 	},
 	dark: {
 		text: '#f7f7f7',
@@ -21,5 +22,6 @@ export default {
 		tabIconSelected: tintColorDark,
 		placeholder: '#ababab',
 		link: '#B1D0E0',
+		secondary: '#000',
 	},
 };

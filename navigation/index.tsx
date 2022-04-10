@@ -11,6 +11,7 @@ import { ColorSchemeName } from 'react-native';
 import { View } from '../components/Themed';
 import AddNewItemScreen from '../screens/AddNewItemScreen';
 import DashboardScreen from '../screens/DashboardScreen';
+import ItemDetailsScreen from '../screens/ItemDetailsScreen';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import { RootStackParamList } from '../types';
@@ -43,6 +44,13 @@ function RootNavigator() {
 				component={AddNewItemScreen}
 				options={{
 					headerTitle: t('newItem.header'),
+				}}
+			/>
+			<Stack.Screen
+				name="ItemDetails"
+				component={ItemDetailsScreen}
+				options={{
+					headerTitle: t('itemDetails.header'),
 				}}
 			/>
 			<Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />

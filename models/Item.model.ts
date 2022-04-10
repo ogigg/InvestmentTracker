@@ -8,6 +8,7 @@ export interface InvestmentItem {
 	name: string;
 	purchases: Purchase[];
 	symbol: string;
+	totalAmount?: number;
 	type?: InvestmentType;
 	data?: CryptoData;
 }

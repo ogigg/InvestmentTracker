@@ -43,5 +43,10 @@
         "addPurchase": "Add purchase",
         "removePurchase": "Remove",
         "save": "Save"
+    },
+    "itemDetails": {
+        "header": "Item details",
+        "purchaseHistory": "Purchase history",
+        "noDate": "No date"
     }
 }
